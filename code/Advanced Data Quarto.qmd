@@ -20,7 +20,7 @@ font_add_google("Lato")
 showtext_auto()
 
 # Load and prep the data
-data <- read_csv("data/envs 193DS data - Sheet1.csv") %>%
+data <- read_csv(here("data", "envs 193DS data - Sheet1.csv")) %>%
   mutate(
     Date = as.Date(Date),
     WeekType = ifelse(`Week Day (Y/n)` == "Y", "Weekday", "Weekend")
@@ -28,5 +28,76 @@ data <- read_csv("data/envs 193DS data - Sheet1.csv") %>%
 ```
 
 ```{r}
+# Visualization 1: Creation of boxplot for Number of People in Line on Weekdays vs. Weekends
 
+ggplot(data, aes(x = WeekType, y = `Amount of people in line`, fill = WeekType)) +
+  geom_boxplot(alpha = 0.7, outlier.color = "black") +
+  labs(title = "People in Line: Weekdays vs Weekends",
+       x = "",
+       y = "Number of People") +
+  theme_minimal(base_family = "Lato") +
+  theme(legend.position = "none")
+```
+
+```{r}
+
+# Visualization 2: Density plot of duration on weekdays and weekends
+
+# Add font
+
+font_add_google("Lato")
+showtext_auto()
+
+
+# Create the plot
+p <- ggplot(data, aes(x = `Duration (s)`, fill = WeekType)) +
+  geom_density(alpha = 0.5) +
+  
+  # Arrow pointing to the tail of weekend distribution
+  geom_curve(
+    aes(x = 250, y = 0.0055, xend = 300, yend = 0.001),
+    arrow = arrow(length = unit(0.03, "npc")),
+    curvature = -0.3,
+    color = "red",
+    size = 0.7,
+    inherit.aes = FALSE
+  ) +
+  
+  # Annotation text for the arrow
+  annotate(
+    "text",
+    x = 250, y = 0.0055,
+    label = "Long right tail for wait time\non weekends",
+    hjust = 0,
+    size = 4,
+    family = "Lato",
+    color = "red"
+  ) +
+  
+  labs(
+    title = "Density Distribution of Line Wait Duration on Weekdays and Weekends",
+    x = "Duration (seconds)",
+    y = "Density"
+  ) +
+  scale_fill_manual(values = c("steelblue", "darkorange")) +
+  theme_minimal(base_family = "Lato") +
+  theme(legend.title = element_blank())
+# Print the plot
+p
+```
+
+```{r}
+# Visualization 3: Creating second boxplot showing duration of line wait on weekdays vs. weekends
+ggplot(data, aes(x = WeekType, y = `Duration (s)`, fill = WeekType)) +
+  geom_boxplot(alpha = 0.7, outlier.color = "black", width = 0.5) +
+  labs(
+    title = "Observation Duration: Weekdays vs Weekends",
+    x = "",
+    y = "Duration (seconds)"
+  ) +
+  theme_minimal(base_family = "Lato") +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(size = 14, face = "bold")
+  )
 ```
