@@ -1,0 +1,32 @@
+---
+title: "Advanced Data Visualization"
+author: "Alyssa Ambrosini"
+format: html
+editor: visual
+Github: "https://github.com/aambrosinii/Advanced-Data-Visualization.git"
+---
+
+```{r}
+library(tidyverse)
+library(here)
+library(ggimage)
+library(showtext)
+library(lubridate)
+```
+
+```{r}
+# Use Google font
+font_add_google("Lato")
+showtext_auto()
+
+# Load and prep the data
+data <- read_csv("data/envs 193DS data - Sheet1.csv") %>%
+  mutate(
+    Date = as.Date(Date),
+    WeekType = ifelse(`Week Day (Y/n)` == "Y", "Weekday", "Weekend")
+  )
+```
+
+```{r}
+
+```
