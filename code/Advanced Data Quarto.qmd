@@ -1,6 +1,7 @@
 ---
 title: "Advanced Data Visualization"
 author: "Alyssa Ambrosini"
+date: "5-27-2025"
 format: html
 editor: visual
 Github: "https://github.com/aambrosinii/Advanced-Data-Visualization.git"
@@ -30,13 +31,18 @@ data <- read_csv(here("data", "envs 193DS data - Sheet1.csv")) %>%
 ```{r}
 # Visualization 1: Creation of boxplot for Number of People in Line on Weekdays vs. Weekends
 
-ggplot(data, aes(x = WeekType, y = `Amount of people in line`, fill = WeekType)) +
+plot1 <- ggplot(data, aes(x = WeekType, y = `Amount of people in line`, fill = WeekType)) +
   geom_boxplot(alpha = 0.7, outlier.color = "black") +
   labs(title = "People in Line: Weekdays vs Weekends",
        x = "",
        y = "Number of People") +
   theme_minimal(base_family = "Lato") +
   theme(legend.position = "none")
+
+# Save the plot
+ggsave(filename = here("figures", "people_in_line_boxplot.png"),
+       plot = plot1,
+       width = 8, height = 6, dpi = 300)
 ```
 
 ```{r}
@@ -88,7 +94,7 @@ p
 
 ```{r}
 # Visualization 3: Creating second boxplot showing duration of line wait on weekdays vs. weekends
-ggplot(data, aes(x = WeekType, y = `Duration (s)`, fill = WeekType)) +
+p3 <- ggplot(data, aes(x = WeekType, y = `Duration (s)`, fill = WeekType)) +
   geom_boxplot(alpha = 0.7, outlier.color = "black", width = 0.5) +
   labs(
     title = "Observation Duration: Weekdays vs Weekends",
@@ -100,4 +106,6 @@ ggplot(data, aes(x = WeekType, y = `Duration (s)`, fill = WeekType)) +
     legend.position = "none",
     plot.title = element_text(size = 14, face = "bold")
   )
+# Saving figure
+ggsave("../figures/density_duration_by_weektype.png", plot = p3, width = 8, height = 5, dpi = 300)
 ```
