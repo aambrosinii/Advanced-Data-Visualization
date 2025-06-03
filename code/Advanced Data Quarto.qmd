@@ -33,6 +33,9 @@ data <- read_csv(here("data", "envs 193DS data - Sheet1.csv")) %>%
 
 plot1 <- ggplot(data, aes(x = WeekType, y = `Amount of people in line`, fill = WeekType)) +
   geom_boxplot(alpha = 0.7, outlier.color = "black") +
+  geom_jitter(width = 0.2, size = 1.5, alpha = 0.6, color = "#654321") +
+  scale_fill_manual(values = c("Weekday" = "#A0522D",  # sienna (dark brown)
+                               "Weekend" = "#DEB887")) # burlywood (light brown)
   labs(title = "People in Line: Weekdays vs Weekends",
        x = "",
        y = "Number of People") +
@@ -40,9 +43,12 @@ plot1 <- ggplot(data, aes(x = WeekType, y = `Amount of people in line`, fill = W
   theme(legend.position = "none")
 
 # Save the plot
-ggsave(filename = here("figures", "people_in_line_boxplot.png"),
-       plot = plot1,
-       width = 8, height = 6, dpi = 300)
+png("my_plot.png", width = 800, height = 600)
+plot(plot1) 
+dev.off()
+
+# Show the plot
+print(plot1)
 ```
 
 ```{r}
@@ -56,7 +62,7 @@ showtext_auto()
 
 
 # Create the plot
-p <- ggplot(data, aes(x = `Duration (s)`, fill = WeekType)) +
+plot2 <- ggplot(data, aes(x = `Duration (s)`, fill = WeekType)) +
   geom_density(alpha = 0.5) +
   
   # Arrow pointing to the tail of weekend distribution
@@ -88,13 +94,16 @@ p <- ggplot(data, aes(x = `Duration (s)`, fill = WeekType)) +
   scale_fill_manual(values = c("steelblue", "darkorange")) +
   theme_minimal(base_family = "Lato") +
   theme(legend.title = element_blank())
-# Print the plot
-p
+
+# Save the plot
+png("my_plot2.png", width = 800, height = 600)
+plot(plot2) 
+dev.off()
 ```
 
 ```{r}
 # Visualization 3: Creating second boxplot showing duration of line wait on weekdays vs. weekends
-p3 <- ggplot(data, aes(x = WeekType, y = `Duration (s)`, fill = WeekType)) +
+plot3 <- ggplot(data, aes(x = WeekType, y = `Duration (s)`, fill = WeekType)) +
   geom_boxplot(alpha = 0.7, outlier.color = "black", width = 0.5) +
   labs(
     title = "Observation Duration: Weekdays vs Weekends",
@@ -106,6 +115,9 @@ p3 <- ggplot(data, aes(x = WeekType, y = `Duration (s)`, fill = WeekType)) +
     legend.position = "none",
     plot.title = element_text(size = 14, face = "bold")
   )
-# Saving figure
-ggsave("../figures/density_duration_by_weektype.png", plot = p3, width = 8, height = 5, dpi = 300)
+
+# Save the plot
+png("my_plot3.png", width = 800, height = 600)
+plot(plot3) 
+dev.off()
 ```
