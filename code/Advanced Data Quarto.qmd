@@ -42,16 +42,11 @@ plot1 <- ggplot(data, aes(x = Day, y = `Amount of people in line`, fill = Day)) 
   scale_fill_manual(values = c("Weekday" = "#A0522D",  # sienna (dark brown)
                                "Weekend" = "#DEB887")) # burlywood (light brown)
   labs(title = "People in Line: Weekdays vs Weekends",
-       x = "",
+       x = "Day",
        y = "Number of People") +
-  theme_minimal(base_family = "Lato") +
-  theme(legend.position = "none")
-
-# Save the plot
-png("my_plot.png", width = 800, height = 600)
-plot(plot1) 
-dev.off()
-
+  theme_minimal(base_family = "Lato") 
+  # Save the plot
+ggsave("plot1.png", plot = plot1, width = 8, height = 6, dpi = 300)
 # Show the plot
 print(plot1)
 ```
@@ -87,10 +82,8 @@ annotate("segment", x = 1.95, xend = 1, y = 5, yend = 3,
   theme_minimal(base_family = "Lato") +
   theme(legend.position = "none")
   
-  # Save the plot
-png("my_plot2.png", width = 800, height = 600)
-plot(plot2) 
-dev.off()
+ # Save the plot
+ggsave("plot2.png", plot = plot2, width = 8, height = 6, dpi = 300)
 
 # Show the plot
 print(plot2)
@@ -115,9 +108,7 @@ plot3 <- ggplot(data, aes(x = Day, y = `Duration (s)`, fill = Day)) +
   )
 
 # Save the plot
-png("my_plot3.png", width = 800, height = 600)
-plot(plot3) 
-dev.off()
+ggsave("plot2.png", plot = plot2, width = 8, height = 6, dpi = 300)
 
 # Show the plot
 print(plot3)
