@@ -4,6 +4,8 @@ author: "Alyssa Ambrosini"
 date: "5-27-2025"
 format: html
 editor: visual
+type: website
+output-dir: .
 Github: "https://github.com/aambrosinii/Advanced-Data-Visualization.git"
 ---
 
