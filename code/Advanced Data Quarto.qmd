@@ -13,6 +13,9 @@ library(here)
 library(ggimage)
 library(showtext)
 library(lubridate)
+library(ggplot2)
+library(dplyr)
+library(ggdist)
 ```
 
 ```{r}
@@ -24,14 +27,14 @@ showtext_auto()
 data <- read_csv(here("data", "envs 193DS data - Sheet1.csv")) %>%
   mutate(
     Date = as.Date(Date),
-    WeekType = ifelse(`Week Day (Y/n)` == "Y", "Weekday", "Weekend")
+    Day = ifelse(`Week Day (Y/n)` == "Y", "Weekday", "Weekend")
   )
 ```
 
 ```{r}
 # Visualization 1: Creation of boxplot for Number of People in Line on Weekdays vs. Weekends
 
-plot1 <- ggplot(data, aes(x = WeekType, y = `Amount of people in line`, fill = WeekType)) +
+plot1 <- ggplot(data, aes(x = Day, y = `Amount of people in line`, fill = Day)) +
   geom_boxplot(alpha = 0.7, outlier.color = "black") +
   geom_jitter(width = 0.2, size = 1.5, alpha = 0.6, color = "#654321") +
   scale_fill_manual(values = c("Weekday" = "#A0522D",  # sienna (dark brown)
@@ -53,58 +56,51 @@ print(plot1)
 
 ```{r}
 
-# Visualization 2: Density plot of duration on weekdays and weekends
+# Visualization 2: Raincloud plot of duration on weekdays and weekends
 
 # Add font
 
 font_add_google("Lato")
 showtext_auto()
 
+#Creating Raincloud Plot
 
-# Create the plot
-plot2 <- ggplot(data, aes(x = `Duration (s)`, fill = WeekType)) +
-  geom_density(alpha = 0.5) +
+plot2 <- ggplot(data, aes(x = Day, y = `Duration (s)`, fill = Day)) +
   
-  # Arrow pointing to the tail of weekend distribution
-  geom_curve(
-    aes(x = 250, y = 0.0055, xend = 300, yend = 0.001),
-    arrow = arrow(length = unit(0.03, "npc")),
-    curvature = -0.3,
-    color = "red",
-    size = 0.7,
-    inherit.aes = FALSE
-  ) +
+  # Half-violin plot showing the distribution
+  stat_halfeye(adjust = 0.5, justification = -0.2, .width = 0, point_colour = NA) +
   
-  # Annotation text for the arrow
-  annotate(
-    "text",
-    x = 250, y = 0.0055,
-    label = "Long right tail for wait time\non weekends",
-    hjust = 0,
-    size = 4,
-    family = "Lato",
-    color = "red"
-  ) +
+  # Jittered points to show raw data
+  geom_jitter(width = 0.15, alpha = 0.6, size = 2, color = "gray30") +
+  scale_fill_manual(values = c("Weekday" = "#654321", "Weekend" = "#DEB887")) +
   
-  labs(
-    title = "Density Distribution of Line Wait Duration on Weekdays and Weekends",
-    x = "Duration (seconds)",
-    y = "Density"
-  ) +
-  scale_fill_manual(values = c("steelblue", "darkorange")) +
+  # Adding annotation
+annotate("text", x = 2.5, y = 11, label = "Most frequent wait time is near zero for each group", 
+         hjust = 0.40, size = 3.2, color = "black") +
+annotate("segment", x = 1.95, xend = 1, y = 5, yend = 3, 
+         color = "black", arrow = arrow(length = unit(0.3, "cm")))
+# Axis Labels
+  labs(title = "Raincloud Plot: Wait Time Duration on Weekdays vs. Weekends",
+       y = "Wait Time (s)", x = "Day Type") +
   theme_minimal(base_family = "Lato") +
-  theme(legend.title = element_blank())
-
-# Save the plot
+  theme(legend.position = "none")
+  
+  # Save the plot
 png("my_plot2.png", width = 800, height = 600)
 plot(plot2) 
 dev.off()
+
+# Show the plot
+print(plot2)
 ```
 
 ```{r}
 # Visualization 3: Creating second boxplot showing duration of line wait on weekdays vs. weekends
-plot3 <- ggplot(data, aes(x = WeekType, y = `Duration (s)`, fill = WeekType)) +
+plot3 <- ggplot(data, aes(x = Day, y = `Duration (s)`, fill = Day)) +
   geom_boxplot(alpha = 0.7, outlier.color = "black", width = 0.5) +
+  geom_jitter(width = 0.2, size = 1.5, alpha = 0.6, color = "#654321") +
+  scale_fill_manual(values = c("Weekday" = "#A0522D",  # sienna (dark brown)
+                               "Weekend" = "#DEB887")) # burlywood (light brown)
   labs(
     title = "Observation Duration: Weekdays vs Weekends",
     x = "",
@@ -120,4 +116,7 @@ plot3 <- ggplot(data, aes(x = WeekType, y = `Duration (s)`, fill = WeekType)) +
 png("my_plot3.png", width = 800, height = 600)
 plot(plot3) 
 dev.off()
+
+# Show the plot
+print(plot3)
 ```
