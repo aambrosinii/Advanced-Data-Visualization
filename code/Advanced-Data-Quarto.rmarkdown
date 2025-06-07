@@ -1,7 +1,7 @@
 ---
 title: "Advanced Data Visualization"
 author: "Alyssa Ambrosini"
-date: "6-4-2025"
+date: "5-27-2025"
 format: html
 editor: visual
 type: website
@@ -102,6 +102,8 @@ plot3 <- ggplot(data, aes(x = Day, y = `Duration (s)`, fill = Day)) +
 
 ```
 
+
+
 Write Up:
 
 In this project, I use box plots and a raincloud plot to explore patterns in wait time durations on weekdays versus weekends. These visualizations were made using ggplot2, ggdist, and additional packages to enhance the styling and calrity of the project.
@@ -135,3 +137,4 @@ This box plot was another version of the plot inspired by Julia Selge, only exam
 Similar to the first figure, I created a variable to distinguish weekdays and weekends. I initially used geom_boxplot() and ended up using geom_jitter(), which would show individual data points across the plot.
 
 I used Julia Selge's code for this figure, as well as code we had previously done in workshop and homework assignments. I kept the colors suggested by ChatGPT and the font of my other two figures.
+
